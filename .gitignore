@@ -70,3 +70,7 @@ cscope.*
 /onenand_ipl/onenand-ipl*
 /onenand_ipl/board/*/onenand*
 /onenand_ipl/board/*/*.S
+
+#Other files
+arch/arm/cpu/armv7/s5pc1xx/asm-offsets.s
+board/samsung/tiny210/tools/mktiny210spl.exe
