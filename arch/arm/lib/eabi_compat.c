@@ -13,12 +13,15 @@
 
 int raise (int signum)
 {
+#if defined(CAUGHT_SIGNAL_8)
 	printf("raise: Signal # %d caught\n", signum);
 	printf("\n");
         printf("\n");
 	printf("########################################################\n");
-	printf("#   Modified by GJGJ  http://blog.csdn.net/liukun321   #\n");
+	printf("#    S5P_OTG_PHYPWR:a0 S5P_OTG_PHYCLK:0 udelay:10us    #\n");
 	printf("########################################################\n");
+	printf("修改s3c_usb_set_descriptors中idVendorL和idVendorH为0xE8和0x04\n"); 
+#endif
 	return 0;
 }
 

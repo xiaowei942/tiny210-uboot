@@ -16,8 +16,7 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
+# GNU General Public License for more details.  #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston,
@@ -36,6 +35,8 @@ ifdef CONFIG_SPL_BUILD
 COBJS  += mmc_boot.o
 COBJS  += nand_cp.o
 endif
+
+COBJS 	+= usbd-otg-hs.o
 
 SRCS	:= $(SOBJS:.o=.S) $(COBJS:.o=.c)
 OBJS	:= $(addprefix $(obj),$(COBJS) $(SOBJS))

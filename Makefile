@@ -559,10 +559,10 @@ endif	# config.mk
 $(VERSION_FILE):
 		@mkdir -p $(dir $(VERSION_FILE))
 		@( localvers='$(shell $(TOPDIR)/tools/setlocalversion $(TOPDIR))' ; \
-		   printf '#define PLAIN_VERSION "%s%s"\n' \
-			"$(U_BOOT_VERSION)" "$${localvers}" ; \
-		   printf '#define U_BOOT_VERSION "U-Boot %s%s"\n' \
-			"$(U_BOOT_VERSION)" "$${localvers}" ; \
+		   printf '#define PLAIN_VERSION "%s"\n' \
+			"$(U_BOOT_VERSION)" ; \
+		   printf '#define U_BOOT_VERSION "U-Boot %s"\n' \
+			"$(U_BOOT_VERSION)" ; \
 		) > $@.tmp
 		@( printf '#define CC_VERSION_STRING "%s"\n' \
 		 '$(shell $(CC) --version | head -n 1)' )>>  $@.tmp

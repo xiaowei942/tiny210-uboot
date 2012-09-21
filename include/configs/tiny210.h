@@ -131,7 +131,7 @@
 #define CONFIG_SYS_LONGHELP             /* undef to save memory */
 #define CONFIG_SYS_HUSH_PARSER          /* use "hush" command parser    */
 #define CONFIG_SYS_PROMPT_HUSH_PS2      "> "
-#define CONFIG_SYS_PROMPT              "[FriendlyLEG-TINY210]# "
+#define CONFIG_SYS_PROMPT              "[ZZ-TINY210]# "
 #define CONFIG_SYS_CBSIZE               256     /* Console I/O Buffer Size*/
 #define CONFIG_SYS_PBSIZE               384     /* Print Buffer Size */
 #define CONFIG_SYS_MAXARGS              16      /* max number of command args */
@@ -428,7 +428,7 @@
 /* FLASH and environment organization */
 #define CONFIG_SYS_NO_FLASH             1
 #undef CONFIG_CMD_IMLS
-#define CONFIG_IDENT_STRING     " for FriendlyLEG-TINY210"
+#define CONFIG_IDENT_STRING     " for TINY210"
 #define CONFIG_DOS_PARTITION            1
 
 /*NAND_BOOT & MMCSD_BOOT  by lk  */
@@ -437,9 +437,20 @@
 #define CONFIG_ENV_SIZE         0x4000  /* 16KB */
 #define RESERVE_BLOCK_SIZE              (2048)
 #define BL1_SIZE                        (8 << 10) /*8 K reserved for BL1*/
-#define CONFIG_ENV_OFFSET               0x40000
+/***************  EDIT BY WEI  ****************/
+#define CONFIG_ENV_OFFSET      0x80000 /* 0x40000 */
+/***************  END OF EDIT  ****************/
 #define CFG_NAND_HWECC
 #define CONFIG_NAND_BL1_8BIT_ECC
 #define CONFIG_8BIT_HW_ECC_SLC      1
+
+/**************  ADD BY WEI  ***************/
+
+/* #define CAUGHT_SIGNAL_8   //启动arch/arm/lib/eabi_compat.c中收到信号8后打印信息功能 */
+#define CONFIG_BOARD_NAME ZZRD-S5PV210
+#define CONFIG_S3C_USBD
+#define USBD_DOWN_ADDR 0x30000000
+
+/**************  END OF ADD  ***************/
 
 #endif	/* __CONFIG_H */
