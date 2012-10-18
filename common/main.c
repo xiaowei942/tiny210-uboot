@@ -40,7 +40,9 @@
 #endif
 
 #include <post.h>
-
+////////////////  ADD BY WEI  ///////////////
+#include<fastboot.h>
+////////////////  END OF ADD  ///////////////
 #if defined(CONFIG_SILENT_CONSOLE) || defined(CONFIG_POST) || defined(CONFIG_CMDLINE_EDITING)
 DECLARE_GLOBAL_DATA_PTR;
 #endif
@@ -319,6 +321,13 @@ void main_loop (void)
 #if defined(CONFIG_HUSH_INIT_VAR)
 	hush_init_var ();
 #endif
+
+////////////////  ADD BY WEI  ////////////////
+#ifdef CONFIG_FASTBOOT
+	if (fastboot_preboot())
+		run_command("fastboot", 0);
+#endif
+////////////////  END OF ADD  ////////////////
 
 #ifdef CONFIG_PREBOOT
 	if ((p = getenv ("preboot")) != NULL) {

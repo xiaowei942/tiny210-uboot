@@ -1105,8 +1105,6 @@ if(1)
 }
 else
 {
-
-	printf("-------------------------------- not yaffs --------------------------------------\n");
 	if (!type->pagesize) {
 		if (((nand->cellinfo >> 2) & 0x3) == 0) {
 	
@@ -1179,7 +1177,7 @@ void change_ecc_func(struct nand_chip *chip,int ifyaffs)
 
 	if(ifyaffs)
 	{
-		printf("set to yaffs params\n");
+		printwei("set to yaffs params\n");
 		chip->ecc.read_page = s3c_nand_read_page_1bit;
 		chip->ecc.write_page = s3c_nand_write_page_1bit;
 		chip->ecc.read_oob = s3c_nand_read_oob_1bit;
@@ -1192,7 +1190,7 @@ void change_ecc_func(struct nand_chip *chip,int ifyaffs)
 	}
 	else
 	{
-		printf("set to non-yaffs params\n");
+		printwei("set to non-yaffs params\n");
 		chip->ecc.read_page = s3c_nand_read_page_8bit;
 		chip->ecc.write_page = s3c_nand_write_page_8bit;
 		chip->ecc.read_oob = s3c_nand_read_oob_8bit;

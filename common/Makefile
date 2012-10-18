@@ -175,6 +175,7 @@ COBJS-$(CONFIG_UPDATE_TFTP) += update.o
 COBJS-$(CONFIG_USB_KEYBOARD) += usb_kbd.o
 ##########  ADD BY WEI  ##########
 COBJS-$(CONFIG_S3C_USBD) += cmd_usbd.o
+COBJS-y += cmd_fastboot.o
 ##########  END OF ADD  ##########
 endif
 

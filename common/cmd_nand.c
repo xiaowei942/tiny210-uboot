@@ -572,7 +572,7 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 		    !strcmp(s, ".e") || !strcmp(s, ".i")) {
 			if (read)
 			{
-				printf("--- READ ---\n");
+				printwei("--- READ ---\n");
 				chip = (struct nand_chip*)nand->priv;
 				change_ecc_func(chip,0);
 				/*	nand_block_read(nand, off, rwsize, &rwsize,(u_char *)addr); */
@@ -583,7 +583,7 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 			else
 			{
 				chip = (struct nand_chip*)nand->priv;
-				printf("---- WRITE ----\n");
+				printwei("---- WRITE ----\n");
 			/*	ret = nand_block_write(nand, off, rwsize, &rwsize,
 							  (u_char *)addr);
 				if (ret == 0) {

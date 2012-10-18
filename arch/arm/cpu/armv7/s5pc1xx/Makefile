@@ -37,6 +37,7 @@ COBJS  += nand_cp.o
 endif
 
 COBJS 	+= usbd-otg-hs.o
+COBJS 	+= fastboot.o
 
 SRCS	:= $(SOBJS:.o=.S) $(COBJS:.o=.c)
 OBJS	:= $(addprefix $(obj),$(COBJS) $(SOBJS))

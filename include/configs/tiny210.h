@@ -441,13 +441,15 @@
 #define CONFIG_ENV_OFFSET      0x80000 /* 0x40000 */
 /***************  END OF EDIT  ****************/
 #define CFG_NAND_HWECC
-
+/* 此处没有任何作用
 #define CONFIG_NAND_BL1_8BIT_ECC
 #define CONFIG_8BIT_HW_ECC_SLC
 #define CONFIG_NAND_4BIT_ECC
 #define CONFIG_NAND_YAFFS_WRITE	1
+   在此注释以免混乱 */
 /**************  ADD BY WEI  ***************/
-#define DEBUG_WEI
+
+/* #define DEBUG_WEI */
 
 #ifdef DEBUG_WEI
 	#define printwei(args...) printf(args)
@@ -458,6 +460,36 @@
 #define CONFIG_BOARD_NAME ZZRD-S5PV210
 #define CONFIG_S3C_USBD
 #define USBD_DOWN_ADDR 0x30000000
+/*#define CONFIG_VIDEO*/
+/*#define CONFIG_CFB_CONSOLE*/
+/*#define CONFIG_VIDEO_LOGO 1*/
+
+/************  Fastboot  ************/
+#define CONFIG_FASTBOOT 1
+
+/* Fastboot variables */
+#define CFG_FASTBOOT_TRANSFER_BUFFER		(0x30000000)
+#define CFG_FASTBOOT_TRANSFER_BUFFER_SIZE	(0x8000000)   /* 128MB */
+#define CFG_FASTBOOT_ADDR_KERNEL		(0xC0008000)
+#define CFG_FASTBOOT_ADDR_RAMDISK		(0x30A00000)
+#define CFG_FASTBOOT_PAGESIZE			(2048)	// Page size of booting device
+#define CFG_FASTBOOT_SDMMC_BLOCKSIZE		(512)	// Block size of sdmmc
+
+/* Just one BSP type should be defined. */
+/* #define CFG_FASTBOOT_ONENANDBSP */
+#define CFG_FASTBOOT_NANDBSP
+
+#if defined(CONFIG_QT210)
+	#define CONFIG_BOOTARGS		"console=ttySAC0,115200 mem=512M"
+	#define CONFIG_BOOTCOMMAND	"nand read C0008000 600000 460000; nand read 30A00000 B00000 180000; bootm C0008000 30A00000"
+#elif defined(CONFIG_TINY210)
+	#define CONFIG_BOOTARGS 	"root=/dev/mtdblock4 rootfstype=yaffs2 init=/linuxrc console=ttySAC0,115200 mem=512M"
+	#define CONFIG_BOOTCOMMAND	"nand read 30000000 600000 460000; bootm 30000000"
+#else
+#endif
+
+/* #define CFG_FASTBOOT_SDMMCBSP */
+/************  Fastboot  *************/
 
 #if defined(CONFIG_QT210)
 	#define CONFIG_BOOTARGS		"console=ttySAC0,115200 mem=512M"
