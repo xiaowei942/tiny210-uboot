@@ -241,7 +241,6 @@ static void s3c_nand_enable_hwecc(struct mtd_info *mtd, int mode)
 		nfconf |= NFCONF_ECC_MLC;	/* MLC */
 
 	writel(nfconf, NFCONF);
-	printf("NFCONF = %x\n",nfconf);
 	/* Initialize & unlock */
 	nfcont = readl(NFCONT);
 	nfcont |= NFCONT_INITMECC;
@@ -399,7 +398,7 @@ static int s3c_nand_correct_data(struct mtd_info *mtd, u_char *dat, u_char *read
 	return ret;
 }
 
-#if defined(CONFIG_NAND_BL1_8BIT_ECC) && defined(CONFIG_S5PC110)
+#if 1 /* defined(CONFIG_NAND_BL1_8BIT_ECC) && defined(CONFIG_S5PC110) */
 /***************************************************************
  * jsgood: Temporary 8 Bit H/W ECC supports for BL1 (6410/6430 only)
  ***************************************************************/
@@ -1059,28 +1058,17 @@ int board_nand_init(struct nand_chip *nand)
 
 	nand->cellinfo = readb(nand->IO_ADDR_R);	/* 3rd byte */
 	tmp = readb(nand->IO_ADDR_R);			/* 4th byte */
-
+if(1)
+{
 	if (!type->pagesize) {
 		if (((nand->cellinfo >> 2) & 0x3) == 0) {
+	
 			nand_type = S3C_NAND_TYPE_SLC;
 			nand->ecc.size = 512;
 			nand->ecc.bytes	= 4;
-			if ((1024 << (tmp & 3)) == 4096) {
-					/* Page size is 4Kbytes */
-			nand->ecc.read_page = s3c_nand_read_page_8bit;
-			nand->ecc.write_page = s3c_nand_write_page_8bit;
-			nand->ecc.read_oob = s3c_nand_read_oob_8bit;
-			nand->ecc.write_oob = s3c_nand_write_oob_8bit;
-			nand->ecc.layout = &s3c_nand_oob_128;
-			nand->ecc.hwctl = s3c_nand_enable_hwecc_8bit;
-			nand->ecc.calculate = s3c_nand_calculate_ecc_8bit;
-			nand->ecc.correct = s3c_nand_correct_data_8bit;
-			nand->ecc.size = 512;
-			nand->ecc.bytes = 13;
-			nand->options |= NAND_NO_SUBPAGE_WRITE;}
-		else 
-			if ((1024 << (tmp & 0x3)) > 512) {
-#if defined(CONFIG_NAND_4BIT_ECC)				
+
+			if ((1024 << (tmp & 0x3)) > 512) 
+			{		
 				nand->ecc.read_page = s3c_nand_read_page_1bit;
 				nand->ecc.write_page = s3c_nand_write_page_1bit;
 				nand->ecc.read_oob = s3c_nand_read_oob_1bit;
@@ -1090,23 +1078,13 @@ int board_nand_init(struct nand_chip *nand)
                                 nand->ecc.calculate = s3c_nand_calculate_ecc;
                                 nand->ecc.correct = s3c_nand_correct_data;
                                 nand->options |= NAND_NO_SUBPAGE_WRITE;
-#else
-	nand->ecc.read_page = s3c_nand_read_page_8bit;
-	nand->ecc.write_page = s3c_nand_write_page_8bit;
-	nand->ecc.read_oob = s3c_nand_read_oob_8bit;
-	nand->ecc.write_oob = s3c_nand_write_oob_8bit;
-	nand->ecc.layout = &s3c_nand_oob_64_8bit;
-	nand->ecc.hwctl = s3c_nand_enable_hwecc_8bit;
-	nand->ecc.calculate = s3c_nand_calculate_ecc_8bit;
-	nand->ecc.correct = s3c_nand_correct_data_8bit;
-	nand->ecc.size = 512;
-	nand->ecc.bytes = 13;
-	nand->options |= NAND_NO_SUBPAGE_WRITE;
-#endif
-			} else {
+			} else 
+			{
 				nand->ecc.layout = &s3c_nand_oob_16;
 			}
-		} else {
+		} 
+		else 
+		{
 			nand_type = S3C_NAND_TYPE_MLC;
 			nand->options |= NAND_NO_SUBPAGE_WRITE;	/* NOP = 1 if MLC */
 			nand->ecc.read_page = s3c_nand_read_page_4bit;
@@ -1115,16 +1093,117 @@ int board_nand_init(struct nand_chip *nand)
 			nand->ecc.bytes = 8;	/* really 7 bytes */
 			nand->ecc.layout = &s3c_nand_oob_mlc_64;
 		}
-	} else {
+	} 
+	else 
+	{
 		nand_type = S3C_NAND_TYPE_SLC;
 		nand->ecc.size = 512;
 		nand->cellinfo = 0;
 		nand->ecc.bytes = 4;
 		nand->ecc.layout = &s3c_nand_oob_16;
 	}
+}
+else
+{
+
+	printf("-------------------------------- not yaffs --------------------------------------\n");
+	if (!type->pagesize) {
+		if (((nand->cellinfo >> 2) & 0x3) == 0) {
+	
+			nand_type = S3C_NAND_TYPE_SLC;
+			nand->ecc.size = 512;
+			nand->ecc.bytes	= 4;
+	
+			if ((1024 << (tmp & 3)) == 4096) {
+					/* Page size is 4Kbytes */
+				nand->ecc.read_page = s3c_nand_read_page_8bit;
+				nand->ecc.write_page = s3c_nand_write_page_8bit;
+				nand->ecc.read_oob = s3c_nand_read_oob_8bit;
+				nand->ecc.write_oob = s3c_nand_write_oob_8bit;
+				nand->ecc.layout = &s3c_nand_oob_128;
+				nand->ecc.hwctl = s3c_nand_enable_hwecc_8bit;
+				nand->ecc.calculate = s3c_nand_calculate_ecc_8bit;
+				nand->ecc.correct = s3c_nand_correct_data_8bit;
+				nand->ecc.size = 512;
+				nand->ecc.bytes = 13;
+				nand->options |= NAND_NO_SUBPAGE_WRITE;}
+			else if ((1024 << (tmp & 0x3)) > 512) {
+				nand->ecc.read_page = s3c_nand_read_page_8bit;
+				nand->ecc.write_page = s3c_nand_write_page_8bit;
+				nand->ecc.read_oob = s3c_nand_read_oob_8bit;
+				nand->ecc.write_oob = s3c_nand_write_oob_8bit;
+				nand->ecc.layout = &s3c_nand_oob_64_8bit;
+				nand->ecc.hwctl = s3c_nand_enable_hwecc_8bit;
+				nand->ecc.calculate = s3c_nand_calculate_ecc_8bit;
+				nand->ecc.correct = s3c_nand_correct_data_8bit;
+				nand->ecc.size = 512;
+				nand->ecc.bytes = 13;
+				nand->options |= NAND_NO_SUBPAGE_WRITE;
+			} else {
+				nand->ecc.layout = &s3c_nand_oob_16;
+			}
+		}else
+	        {
+			nand_type = S3C_NAND_TYPE_MLC;
+			nand->options |= NAND_NO_SUBPAGE_WRITE;	/* NOP = 1 if MLC */
+			nand->ecc.read_page = s3c_nand_read_page_4bit;
+			nand->ecc.write_page = s3c_nand_write_page_4bit;
+			nand->ecc.size = 512;
+			nand->ecc.bytes = 8;	/* really 7 bytes */
+			nand->ecc.layout = &s3c_nand_oob_mlc_64;
+		}
+	} 
+	else
+	{
+		nand_type = S3C_NAND_TYPE_SLC;
+		nand->ecc.size = 512;
+		nand->cellinfo = 0;
+		nand->ecc.bytes = 4;
+		nand->ecc.layout = &s3c_nand_oob_16;
+	}
+}
 #else
 	nand->ecc.mode = NAND_ECC_SOFT;
 #endif
 	return 0;
+}
+
+
+void change_ecc_func(struct nand_chip *chip,int ifyaffs)
+{
+	if(!chip)
+	{
+		printf("No nand chip\n");
+		return -EINVAL;
+	}
+
+	if(ifyaffs)
+	{
+		printf("set to yaffs params\n");
+		chip->ecc.read_page = s3c_nand_read_page_1bit;
+		chip->ecc.write_page = s3c_nand_write_page_1bit;
+		chip->ecc.read_oob = s3c_nand_read_oob_1bit;
+		chip->ecc.write_oob = s3c_nand_write_oob_1bit;
+		chip->ecc.layout = &s3c_nand_oob_64;
+		chip->ecc.hwctl = s3c_nand_enable_hwecc;
+                chip->ecc.calculate = s3c_nand_calculate_ecc;
+                chip->ecc.correct = s3c_nand_correct_data;
+                chip->options |= NAND_NO_SUBPAGE_WRITE;
+	}
+	else
+	{
+		printf("set to non-yaffs params\n");
+		chip->ecc.read_page = s3c_nand_read_page_8bit;
+		chip->ecc.write_page = s3c_nand_write_page_8bit;
+		chip->ecc.read_oob = s3c_nand_read_oob_8bit;
+		chip->ecc.write_oob = s3c_nand_write_oob_8bit;
+		chip->ecc.layout = &s3c_nand_oob_128;
+		chip->ecc.hwctl = s3c_nand_enable_hwecc_8bit;
+		chip->ecc.calculate = s3c_nand_calculate_ecc_8bit;
+		chip->ecc.correct = s3c_nand_correct_data_8bit;
+		chip->ecc.size = 512;
+		chip->ecc.bytes = 13;
+		chip->options |= NAND_NO_SUBPAGE_WRITE;
+	}
 }
 #endif /* (CONFIG_CMD_NAND) */

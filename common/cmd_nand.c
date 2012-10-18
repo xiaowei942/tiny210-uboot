@@ -380,6 +380,7 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 	loff_t off, size;
 	char *cmd, *s;
 	nand_info_t *nand;
+	struct nand_chip *chip;
 #ifdef CONFIG_SYS_NAND_QUIET
 	int quiet = CONFIG_SYS_NAND_QUIET;
 #else
@@ -570,11 +571,32 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 		if (!s || !strcmp(s, ".jffs2") ||
 		    !strcmp(s, ".e") || !strcmp(s, ".i")) {
 			if (read)
+			{
+				printf("--- READ ---\n");
+				chip = (struct nand_chip*)nand->priv;
+				change_ecc_func(chip,0);
+				/*	nand_block_read(nand, off, rwsize, &rwsize,(u_char *)addr); */
 				ret = nand_read_skip_bad(nand, off, &rwsize,
 							 (u_char *)addr);
+				change_ecc_func(chip,1);
+			}
 			else
+			{
+				chip = (struct nand_chip*)nand->priv;
+				printf("---- WRITE ----\n");
+			/*	ret = nand_block_write(nand, off, rwsize, &rwsize,
+							  (u_char *)addr);
+				if (ret == 0) {
+					uint *magic = (uint*)(PHYS_SDRAM_1);
+					if ((0x24564236 == magic[0]) && (0x20764316 == magic[1]))
+						magic[0] = 0x27051956;
+				} */
+				change_ecc_func(chip,0);		
 				ret = nand_write_skip_bad(nand, off, &rwsize,
 							  (u_char *)addr, 0);
+				change_ecc_func(chip,1);
+			}
+
 #ifdef CONFIG_CMD_NAND_TRIMFFS
 		} else if (!strcmp(s, ".trimffs")) {
 			if (read) {
@@ -587,12 +609,16 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 #endif
 #ifdef CONFIG_CMD_NAND_YAFFS
 		} else if (!strcmp(s, ".yaffs")) {
+			
+			chip = (struct nand_chip*)nand->priv;
+			change_ecc_func(chip,1);		
 			if (read) {
 				printf("Unknown nand command suffix '%s'.\n", s);
 				return 1;
 			}
 			ret = nand_write_skip_bad(nand, off, &rwsize,
 						(u_char *)addr, WITH_YAFFS_OOB);
+			change_ecc_func(chip,0);
 #endif
 		} else if (!strcmp(s, ".oob")) {
 			/* out-of-band data */

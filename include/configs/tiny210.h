@@ -89,7 +89,7 @@
 #define CONFIG_CMDLINE_EDITING
 
 /* MACH_TYPE_MINI210 macro will be removed once added to mach-types */
-#define MACH_TYPE_TINY210		2456
+#define MACH_TYPE_TINY210		3466
 #define CONFIG_MACH_TYPE		MACH_TYPE_TINY210
 
 /* Size of malloc() pool */
@@ -441,15 +441,32 @@
 #define CONFIG_ENV_OFFSET      0x80000 /* 0x40000 */
 /***************  END OF EDIT  ****************/
 #define CFG_NAND_HWECC
+
 #define CONFIG_NAND_BL1_8BIT_ECC
-#define CONFIG_8BIT_HW_ECC_SLC      1
-
+#define CONFIG_8BIT_HW_ECC_SLC
+#define CONFIG_NAND_4BIT_ECC
+#define CONFIG_NAND_YAFFS_WRITE	1
 /**************  ADD BY WEI  ***************/
+#define DEBUG_WEI
 
+#ifdef DEBUG_WEI
+	#define printwei(args...) printf(args)
+#else
+	#define printwei(args...)
+#endif
 /* #define CAUGHT_SIGNAL_8   //启动arch/arm/lib/eabi_compat.c中收到信号8后打印信息功能 */
 #define CONFIG_BOARD_NAME ZZRD-S5PV210
 #define CONFIG_S3C_USBD
 #define USBD_DOWN_ADDR 0x30000000
+
+#if defined(CONFIG_QT210)
+	#define CONFIG_BOOTARGS		"console=ttySAC0,115200 mem=512M"
+	#define CONFIG_BOOTCOMMAND	"nand read C0008000 600000 460000; nand read 30A00000 B00000 180000; bootm C0008000 30A00000"
+#elif defined(CONFIG_TINY210)
+	#define CONFIG_BOOTARGS 	"root=/dev/mtdblock4 rootfstype=yaffs2 init=/linuxrc console=ttySAC0,115200 mem=512M"
+	#define CONFIG_BOOTCOMMAND	"nand read 30000000 600000 460000; bootm 30000000"
+#else
+#endif
 
 /**************  END OF ADD  ***************/
 
